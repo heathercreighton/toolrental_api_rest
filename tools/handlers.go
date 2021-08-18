@@ -71,14 +71,16 @@ func (t *Tools) Root(w http.ResponseWriter, r *http.Request){
 }
 
 func (t *Tools) Items(w http.ResponseWriter, r *http.Request) {
-	idParam := strings.TrimPrefix(r.URL.Path, "/api/tools/")
-  id, err  := strconv.Atoi(idParam)
+	// We can do all the prework before checking for the HTTP Method
+  
+  idParam := strings.TrimPrefix(r.URL.Path, "/api/tools/") //trim the ID from the route
+  id, err  := strconv.Atoi(idParam)   //converts the ID to an integer
 
   if err != nil {
       http.Error(w, err.Error(), http.StatusBadRequest)
       return
     }
-  tool, err := t.db.FindByID(id)
+  tool, err := t.db.FindByID(id) //finds the tool in the database
   if err != nil || tool == nil {
         http.Error(w, "Invalid ID. Please try again.", http.StatusBadRequest)
         return
